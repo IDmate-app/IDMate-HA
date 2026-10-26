@@ -1,0 +1,58 @@
+name: Bug report
+description: The integration does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! German or English, both are fine.
+        Please never post your AES key, tokens or home coordinates.
+  - type: input
+    id: version
+    attributes:
+      label: Integration version
+      description: HACS → IDMate Telemetry, e.g. 1.4.5
+      placeholder: 1.4.5
+    validations:
+      required: true
+  - type: input
+    id: ha
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.10.1
+    validations:
+      required: true
+  - type: input
+    id: idmate
+    attributes:
+      label: IDmate version
+      placeholder: 1.2.243
+  - type: dropdown
+    id: entry
+    attributes:
+      label: Entry type
+      options:
+        - Vehicle telemetry (MQTT)
+        - Charge tracker (wallbox readings)
+        - Vehicle import (IDmate → HA)
+    validations:
+      required: true
+  - type: input
+    id: vehicle
+    attributes:
+      label: Vehicle and source integration
+      description: Which car and which HA integration delivers its data
+      placeholder: Kia EV6 via Kia Connect
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Home Assistant log
+      description: Settings → System → Logs, filtered for idmate_telemetry. Remove keys and coordinates first.
+      render: text
