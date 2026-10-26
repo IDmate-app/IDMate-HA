@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/IDmate-app/IDMate-HA#readme
+    about: Installation and configuration
+  - name: IDmate server
+    url: https://github.com/IDmate-app/IDMate/issues
+    about: Trip log, charges and analysis problems go there
+  - name: IDTelemetry stick
+    url: https://github.com/IDmate-app/IDTelemetry/issues
+    about: Problems with the ESP32 stick go there
