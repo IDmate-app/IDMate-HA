@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # A new version in manifest.json becomes release v<version>; HACS
+      # offers releases as updates. Existing releases stay untouched.
+      - name: Release new version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V=$(python3 -c "import json; print(json.load(open('custom_components/idmate_telemetry/manifest.json'))['version'])")
+          if gh release view "v$V" >/dev/null 2>&1; then
+            echo "v$V already released"; exit 0
+          fi
+          gh release create "v$V" --target "$GITHUB_SHA" --title "v$V" --generate-notes
