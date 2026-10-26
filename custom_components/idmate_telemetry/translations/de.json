@@ -1,0 +1,116 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "IDMate",
+        "description": "Was möchtest du einrichten?",
+        "menu_options": {
+          "telemetry": "Fahrzeug-Telemetrie (verschlüsseltes MQTT)",
+          "import_vehicles": "IDMate-Fahrzeuge in Home Assistant importieren (HTTP)"
+        }
+      },
+      "telemetry": {
+        "title": "IDMate Telemetry — MQTT-Verbindung",
+        "description": "Verbindung zum IDMate-MQTT-Broker im LAN. Wie die ESP32-Sticks ist der Broker plain (Port 1883) und anonym — die Sicherheit ist der AES-Key. Kein TLS, kein Benutzer/Passwort und keine Freigabe nach außen nötig.",
+        "data": {
+          "device": "Gerätename (IDMate-Fahrzeug-ID, z.B. id7)",
+          "host": "Broker-LAN-IP",
+          "port": "Broker-Port",
+          "username": "MQTT-Benutzer (meist leer)",
+          "password": "MQTT-Passwort (meist leer)",
+          "aes_key": "AES-Key (64 Hex-Zeichen)",
+          "tls": "TLS verwenden (meist aus)",
+          "tls_insecure": "Selbstsigniertes Zertifikat akzeptieren",
+          "interval": "Prüfintervall / Mindestabstand zwischen Sendungen (s)",
+          "max_interval": "Heartbeat: max. Abstand während aktiv (s)",
+          "min_distance": "Distanz-Trigger (m)",
+          "min_heading": "Kurswechsel-Trigger (°)",
+          "still_points": "Stillstandspunkte nach dem Halten"
+        },
+        "data_description": {
+          "device": "Muss der Fahrzeug-ID in IDMate entsprechen (sendet an tele/.../data).",
+          "still_points": "Wie viele 0-km/h-Punkte nach dem Anhalten gesendet werden (markiert den echten Parkplatz), danach Funkstille. 0 = keine.",
+          "host": "Die LAN-IP des Brokers — bleibt intern, keine Freigabe ins Internet nötig.",
+          "port": "1883 (plain) — IDMate-Broker-Modell. Nur für einen TLS-Broker ändern.",
+          "username": "Leer lassen — IDMates Broker ist anonym; die Sicherheit ist der AES-Key.",
+          "password": "Leer lassen (anonymer Broker).",
+          "aes_key": "Exakt derselbe 64-stellige Key wie MQTT_AES_KEY am IDMate-Server — er authentifiziert die Daten.",
+          "tls": "Aus — IDMate nutzt einen plain LAN-Broker. Nur für einen gehärteten TLS-Broker an.",
+          "tls_insecure": "Nur relevant, wenn TLS an ist (selbstsigniertes Zertifikat)."
+        }
+      },
+      "entities": {
+        "title": "IDMate Telemetry — Entity-Zuordnung",
+        "description": "Quell-Entities wählen. SoC und Geschwindigkeit sind Pflicht, der Rest optional. Einheiten für Reichweite/Leistung/Kilometerstand werden automatisch erkannt (m/km/mi, W/kW).",
+        "data": {
+          "soc_entity": "Ladezustand (%)",
+          "speed_entity": "Geschwindigkeit",
+          "location_entity": "Standort (device_tracker)",
+          "odometer_entity": "Kilometerstand",
+          "range_entity": "Restreichweite",
+          "power_entity": "Leistung",
+          "ext_temp_entity": "Außentemperatur",
+          "heading_entity": "Fahrtrichtung (Heading)"
+        },
+        "data_description": {
+          "soc_entity": "Pflicht — Ladezustand (%).",
+          "speed_entity": "Pflicht — steuert Fahrterkennung und wie oft gesendet wird.",
+          "location_entity": "GPS für die Karte. Distanz- und Kurs-Trigger werden daraus berechnet; der Kurs wird beim Fahren automatisch mitgesendet.",
+          "odometer_entity": "Gesamtkilometerstand.",
+          "range_entity": "Geschätzte Restreichweite.",
+          "power_entity": "Aktuelle Leistung (Fahren/Laden).",
+          "ext_temp_entity": "Außentemperatur.",
+          "heading_entity": "Optionaler Override — leer lassen, dann wird der Kurs aus der GPS-Bewegung berechnet."
+        }
+      },
+      "import_vehicles": {
+        "title": "IDMate-Fahrzeuge importieren",
+        "description": "Holt die in IDMate freigegebenen Fahrzeuge (Admin → Home Assistant) nach HA. Öffne zuerst diese Seite, erzeuge einen Token und hake die Fahrzeuge an — dann hier die Werte eintragen.",
+        "data": {
+          "import_url": "IDMate-Server (IP genügt)",
+          "import_token": "Lese-Token",
+          "import_interval": "Abfrageintervall (s)"
+        },
+        "data_description": {
+          "import_url": "Einfach die LAN-IP des Servers eingeben, z.B. 192.168.1.50 — http:// und :3004 werden automatisch ergänzt. Steht auf der IDMate-Admin-Seite.",
+          "import_token": "Aus IDMate → Admin → Home Assistant kopieren (Feld 'Lese-Token').",
+          "import_interval": "Aktualisierungsintervall in Sekunden. 30 ist ok."
+        }
+      }
+    },
+    "error": {
+      "aes_key_length": "Der AES-Key muss exakt 64 Hex-Zeichen lang sein (32 Byte).",
+      "aes_key_hex": "Der AES-Key darf nur Hex-Zeichen enthalten (0-9, a-f).",
+      "cannot_connect": "IDMate-Server unter dieser URL nicht erreichbar.",
+      "invalid_auth": "Der IDMate-Server hat diesen Token abgelehnt.",
+      "not_configured": "In IDMate ist noch kein Home-Assistant-Export konfiguriert (Token im IDMate-Admin setzen)."
+    },
+    "abort": {
+      "already_configured": "Dieser Eintrag ist bereits konfiguriert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "IDMate — Optionen",
+        "description": "Zuordnung anpassen (bei Telemetrie zusätzlich das Sendeintervall).",
+        "data": {
+          "soc_entity": "Ladezustand (%)",
+          "speed_entity": "Geschwindigkeit",
+          "location_entity": "Standort (device_tracker)",
+          "odometer_entity": "Kilometerstand",
+          "range_entity": "Restreichweite",
+          "power_entity": "Leistung",
+          "ext_temp_entity": "Außentemperatur",
+          "heading_entity": "Fahrtrichtung (Heading)",
+          "interval": "Prüfintervall / Mindestabstand zwischen Sendungen (s)",
+          "max_interval": "Heartbeat: max. Abstand während aktiv (s)",
+          "min_distance": "Distanz-Trigger (m)",
+          "min_heading": "Kurswechsel-Trigger (°)",
+          "still_points": "Stillstandspunkte nach dem Halten",
+          "import_interval": "Abfrageintervall (s)"
+        }
+      }
+    }
+  }
+}
