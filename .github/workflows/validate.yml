@@ -18,10 +18,10 @@ jobs:
         uses: hacs/action@main
         with:
           category: integration
-          # 'brands' can only be satisfied by a PR to home-assistant/brands and
-          # is required only for HACS default-store inclusion, not for custom
-          # repository installs. Drop the ignore once the icon PR is merged.
-          ignore: brands
+          # 'brands' (PR to home-assistant/brands) and 'topics' (repo settings)
+          # are required only for HACS default-store inclusion, not for custom
+          # repository installs.
+          ignore: brands topics
 
   hassfest:
     name: hassfest
