@@ -50,6 +50,9 @@
           "range_entity": "Remaining range",
           "power_entity": "Power",
           "ext_temp_entity": "Outside temperature",
+          "soe_entity": "Energy content (kWh)",
+          "hvac_entity": "Auxiliary consumers",
+          "cabin_temp_entity": "Cabin temperature",
           "heading_entity": "Heading"
         },
         "data_description": {
@@ -60,12 +63,15 @@
           "range_entity": "Estimated remaining range.",
           "power_entity": "Current power (driving/charging).",
           "ext_temp_entity": "Outside temperature.",
+          "soe_entity": "Energy left per battery (kWh or Wh).",
+          "hvac_entity": "Power of climate/heating and auxiliary consumers (W or kW).",
+          "cabin_temp_entity": "Cabin temperature.",
           "heading_entity": "Optional override — leave empty to use the heading computed from GPS movement."
         }
       },
       "import_vehicles": {
         "title": "Import IDMate vehicles",
-        "description": "Pulls the vehicles you exposed in IDMate (Admin → Home Assistant) into HA. First open that page, generate a token and tick the vehicles to share — then paste the values below.",
+        "description": "Pulls the vehicles you exposed in IDMate (Admin → Interfaces) into HA. First open that page, generate a token and tick the vehicles to share — then paste the values below.",
         "data": {
           "import_url": "IDMate server (IP is enough)",
           "import_token": "Read token",
@@ -73,7 +79,7 @@
         },
         "data_description": {
           "import_url": "Just type the server's LAN IP, e.g. 192.168.1.50 — http:// and :3004 are added automatically. Shown on the IDMate admin page.",
-          "import_token": "Copy it from IDMate → Admin → Home Assistant (the 'Read token' field).",
+          "import_token": "Copy it from IDMate → Admin → Interfaces (the 'Read token' field).",
           "import_interval": "How often to refresh, in seconds. 30 is fine."
         }
       }
@@ -102,6 +108,9 @@
           "range_entity": "Remaining range",
           "power_entity": "Power",
           "ext_temp_entity": "Outside temperature",
+          "soe_entity": "Energy content (kWh)",
+          "hvac_entity": "Auxiliary consumers",
+          "cabin_temp_entity": "Cabin temperature",
           "heading_entity": "Heading",
           "interval": "Evaluation interval / minimum gap between sends (s)",
           "max_interval": "Heartbeat: max gap while active (s)",

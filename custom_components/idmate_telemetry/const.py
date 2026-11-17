@@ -30,6 +30,9 @@ CONF_ODOMETER = "odometer_entity"
 CONF_RANGE = "range_entity"
 CONF_POWER = "power_entity"
 CONF_EXT_TEMP = "ext_temp_entity"
+CONF_SOE = "soe_entity"
+CONF_HVAC = "hvac_entity"
+CONF_CABIN_TEMP = "cabin_temp_entity"
 CONF_HEADING = "heading_entity"
 
 # ── Import (IDMate vehicles -> Home Assistant) config keys ───

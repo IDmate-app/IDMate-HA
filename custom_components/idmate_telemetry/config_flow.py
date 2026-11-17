@@ -21,6 +21,9 @@ from .const import (
     CONF_AES_KEY,
     CONF_DEVICE,
     CONF_EXT_TEMP,
+    CONF_SOE,
+    CONF_HVAC,
+    CONF_CABIN_TEMP,
     CONF_HEADING,
     CONF_HOST,
     CONF_IMPORT_INTERVAL,
@@ -145,6 +148,9 @@ def _entities_schema(d: dict[str, Any]) -> vol.Schema:
     _opt(fields, CONF_RANGE, _entity("sensor"), d)
     _opt(fields, CONF_POWER, _entity("sensor"), d)
     _opt(fields, CONF_EXT_TEMP, _entity("sensor"), d)
+    _opt(fields, CONF_SOE, _entity("sensor"), d)
+    _opt(fields, CONF_HVAC, _entity("sensor"), d)
+    _opt(fields, CONF_CABIN_TEMP, _entity("sensor"), d)
     _opt(fields, CONF_HEADING, _entity("sensor"), d)
     return vol.Schema(fields)
 

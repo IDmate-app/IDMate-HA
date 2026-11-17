@@ -74,10 +74,11 @@ In short: **broker IP + AES key** is all you normally enter.
 Entity mapping (SoC + speed required, rest optional):
 
 - State of charge (%), speed, location (`device_tracker`), odometer, remaining
-  range, power, outside temperature, heading (optional override; by default it is
-  computed from GPS). Each field has an inline hint explaining it.
-- Units for range / power / odometer are auto-detected from
-  `unit_of_measurement` (`m`/`km`/`mi`, `W`/`kW`, `mph`).
+  range, power, outside temperature, energy content (kWh/Wh), auxiliary power
+  (climate/heating, W/kW), cabin temperature, heading (optional override; by
+  default it is computed from GPS). Each field has an inline hint explaining it.
+- Units for range / power / odometer / energy are auto-detected from
+  `unit_of_measurement` (`m`/`km`/`mi`, `W`/`kW`, `Wh`/`kWh`, `mph`).
 
 **Adaptive sending (GPS state machine).** Instead of a dumb fixed timer the
 integration mirrors the ESP32 firmware: it *evaluates* every `interval` seconds

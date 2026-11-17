@@ -56,6 +56,9 @@ _SCHEMA = [
     (17, "ls", "<B", None),
     (18, "bd", "<B", None),
     (19, "lp", "<H", None),
+    (20, "se", "<H", 10),    # energy left (kWh), firmware 1.5.0
+    (21, "hk", "<h", 100),   # auxiliary/HVAC power (kW)
+    (22, "ct", "<b", None),  # cabin temperature (°C)
 ]
 
 _MILES_TO_KM = 1.609344
@@ -331,6 +334,18 @@ class IdmateTelemetry:
         if ext_temp is not None:
             values["et"] = ext_temp  # build_telegram packs it as a signed byte °C
 
+        soe = self._num(cfg.get("soe_entity"))
+        if soe is not None and soe >= 0:
+            values["se"] = self._to_kwh(soe, self._unit(cfg.get("soe_entity")))
+
+        hvac = self._num(cfg.get("hvac_entity"))
+        if hvac is not None:
+            values["hk"] = self._to_kw(hvac, self._unit(cfg.get("hvac_entity")))
+
+        cabin = self._num(cfg.get("cabin_temp_entity"))
+        if cabin is not None:
+            values["ct"] = cabin  # signed byte °C like the outside temperature
+
         heading = self._num(cfg.get("heading_entity"))
         if heading is not None:
             values["hd"] = int(round(heading)) % 360  # explicit beats computed
@@ -349,3 +364,7 @@ class IdmateTelemetry:
     @staticmethod
     def _to_kw(value: float, unit: str) -> float:
         return value / 1000.0 if unit.lower() == "w" else value  # assume kW
+
+    @staticmethod
+    def _to_kwh(value: float, unit: str) -> float:
+        return value / 1000.0 if unit.lower() == "wh" else value  # assume kWh
