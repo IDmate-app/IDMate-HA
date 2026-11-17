@@ -53,9 +53,9 @@ and restart.
 
 ## Configuration
 
-When you add the integration, a menu lets you choose **Vehicle telemetry** or
-**Charge tracker**. Add as many entries as you like (one per vehicle / per
-meter).
+When you add the integration, a menu lets you choose **Vehicle telemetry (MQTT)**
+or **Import IDMate vehicles (HTTP)**. Add as many entries as you like (one per
+vehicle).
 
 ### Vehicle telemetry (MQTT)
 
@@ -65,14 +65,17 @@ Connection:
 - **Broker LAN IP** — your Mosquitto on the LAN, plain port `1883` (default).
 - **AES key** — the same 64-char hex key as the IDMate server's `MQTT_AES_KEY`. This is the security.
 - **Username / password / TLS** — leave empty / off (IDMate's broker is plain and anonymous). Only set them for a hardened TLS broker.
-- **Send interval** — default 60 s.
+- **Evaluation interval** — default 10 s: how often the triggers are checked and
+  the minimum gap between two telegrams. The 60 s heartbeat is a separate setting
+  (see below).
 
 In short: **broker IP + AES key** is all you normally enter.
 
 Entity mapping (SoC + speed required, rest optional):
 
 - State of charge (%), speed, location (`device_tracker`), odometer, remaining
-  range, power, outside temperature. Each field has an inline hint explaining it.
+  range, power, outside temperature, heading (optional override; by default it is
+  computed from GPS). Each field has an inline hint explaining it.
 - Units for range / power / odometer are auto-detected from
   `unit_of_measurement` (`m`/`km`/`mi`, `W`/`kW`, `mph`).
 
@@ -98,12 +101,12 @@ Home Assistant automation, so there is no charging entity here.
 Brings vehicles that live in IDMate (e.g. the CAN/ESP32 loggers) **into** Home
 Assistant.
 
-First, in **IDMate → Admin → Home Assistant**: generate a read token and tick
+First, in **IDMate → Admin → Interfaces** (German UI: *Schnittstellen*): generate a read token and tick
 the vehicles you want to expose. Leave anything that originates in HA unticked —
 there is no loopback. Then add this integration:
 
 - **IDMate base URL** — e.g. `http://192.168.1.5:3004`.
-- **Read token** — the token shown on that IDMate admin page.
+- **Read token** — the token shown on that IDMate admin tab.
 - **Poll interval** — default 30 s.
 
 For each exposed vehicle the integration creates a **device** with sensors (state
